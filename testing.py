@@ -15,19 +15,20 @@ class converter:
     self.temp_frame = Frame(padx=10, pady=10)
     self.temp_frame.grid()
 
-    self.temp_heading = Label(self.temp_frame,
+    # heading text
+    self.heading = Label(self.temp_frame,
                               text="Right Angled Triangle Solver",
                               font=("Arial", "16", "bold"))
-    self.temp_heading.grid(row=0)
+    self.heading.grid(row=0)
 
-
-    instuctions = "<basic instructions>"
-    self.temp_instructions = Label(self.temp_frame,
+    # Simple intructions text
+    instuctions = "Please select a mode, then input each of the values into the respective input square."
+    self.basic_instructions = Label(self.temp_frame,
                                    text=instuctions,
                                    wrap=250,
                                    width=40,
-                                   justify="left")
-    self.temp_instructions.grid(row=1)
+                                   justify="center")
+    self.basic_instructions.grid(row=1)
 
     # Conversion, help and history / export buttons
     self.button_frame = Frame(self.temp_frame)
@@ -43,9 +44,26 @@ class converter:
 
     self.show_mode = Label(self.button_frame,
                                     text="Mode: <mode>",
-                                    width=12,
+                                    width=24,
                                     justify="left")
     self.show_mode.grid(row=0, column=2,pady=5, padx=5)
+
+    self.to_radian_mode = Button(self.button_frame,
+                                    text="Radians",
+                                    bg="#009900",
+                                    fg=button_fg,
+                                    font=button_font,
+                                    width=12)
+    self.to_radian_mode.grid(row=1, column=0,pady=5, padx=5)
+
+    self.to_help = Button(self.button_frame,
+                                    text="Help",
+                                    bg="#004C99",
+                                    fg=button_fg,
+                                    font=button_font,
+                                    width=12)
+    self.to_help.grid(row=2, column=0,pady=5, padx=5)
+
 
 
 # Main Routine
