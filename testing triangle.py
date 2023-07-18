@@ -5,6 +5,6 @@ from tkinter import *
 root= Tk()
 can = Canvas(root, width=200, height=200)
 can.pack()
-points = [20,35, 80,20, 80,35]
-can.create_polygon(points, fill='white')
+points_outer = [20,80, 80,20, 80,80]
+can.create_polygon(points_outer, fill='white')
 root.mainloop()

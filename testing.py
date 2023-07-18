@@ -64,10 +64,11 @@ class converter:
                                     width=12)
     self.to_help.grid(row=2, column=0,pady=5, padx=5)
 
+  
 
 
 # Main Routine
-if __name__ == "__main__":
+if __name__ == "__main__": 
   root = Tk()
   root.title("Right Angle Triangle Solver")
   converter()
