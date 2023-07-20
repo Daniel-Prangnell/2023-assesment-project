@@ -1,0 +1,7 @@
+self.to_help = Button(self.input_value_frame,
+                                    text="Help",
+                                    bg="#004C99",
+                                    fg=button_fg,
+                                    font=button_font,
+                                    width=12)
+    self.to_help.grid(row=3, column=0,pady=5, padx=5)
