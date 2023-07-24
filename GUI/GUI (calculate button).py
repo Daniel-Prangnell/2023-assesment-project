@@ -49,7 +49,6 @@ class converter:
                                     fg=button_fg,
                                     font=button_font,
                                     width=10,
-                                    state=DISABLED,
                                     command=lambda: change_mode("Degrees", self))
     self.to_degrees_mode.grid(row=0, column=0,pady=5, padx=5)
 
@@ -62,7 +61,7 @@ class converter:
     # change type of calculation mode to radian
     self.to_radian_mode = Button(self.mode_button_frame,
                                     text="Radians",
-                                    bg="#296EB4",
+                                    bg="#009900",
                                     fg=button_fg,
                                     font=button_font,
                                     width=10,
@@ -84,74 +83,37 @@ class converter:
                                     width=24,
                                     wraplength=200,
                                     justify="center")
-    self.side_length_text.grid(row=1, column=0, columnspan=2, pady=5, padx=5)
+    self.side_length_text.grid(row=1, column=0,pady=5, padx=5)
 
     self.angle_size_text = Label(self.input_value_frame,
                                     text="Input the values for the side lengths in the boxes below",
                                     width=24,
                                     wraplength=200,
                                     justify="center")
-    self.angle_size_text.grid(row=1, column=3, columnspan=2, pady=5, padx=5)
+    self.angle_size_text.grid(row=1, column=1,pady=5, padx=5)
 
-
-    #side length input text
-    self.hypotenuse_length_text = Label(self.input_value_frame,
-                                    text="Hypotenuse: ",
-                                    width=10,
-                                    wraplength=150,
-                                    justify="center")
-    self.hypotenuse_length_text.grid(row=2, column=0)
-
-    self.adjacent_length_text = Label(self.input_value_frame,
-                                    text="Hypotenuse: ",
-                                    width=10,
-                                    wraplength=150,
-                                    justify="center")
-    self.adjacent_length_text.grid(row=3, column=0)
-
-    self.opposite_length_text = Label(self.input_value_frame,
-                                    text="Hypotenuse: ",
-                                    width=10,
-                                    wraplength=150,
-                                    justify="center")
-    self.opposite_length_text.grid(row=4, column=0)
 
     # Length value inputs boxes
     # hypotenuse length value input box
-    self.hypotenuse_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), width=12)
-    self.hypotenuse_length_entry.grid(row=2, column=1, padx=10, pady=3)
+    self.hypotenuse_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), )
+    self.hypotenuse_length_entry.grid(row=2, padx=10, pady=3)
 
     # adjacent length value input box
-    self.adjacent_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), width=12)
-    self.adjacent_length_entry.grid(row=3, column=1, padx=10, pady=3)
+    self.adjacent_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), )
+    self.adjacent_length_entry.grid(row=3, padx=10, pady=3)
 
     # opposite length value input box
-    self.opposite_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), width=12)
-    self.opposite_length_entry.grid(row=4, column=1, padx=10, pady=3)
+    self.opposite_length_entry = Entry(self.input_value_frame, font=("Arial", "14"), )
+    self.opposite_length_entry.grid(row=4, padx=10, pady=3)
 
-
-
-
-    #side length input text
-    self.adjacent_angle_text = Label(self.input_value_frame,
-                                    text="Adjacent: ",
-                                    width=10,
-                                    wraplength=150,
-                                    justify="center")
-    self.adjacent_angle_text.grid(row=2, column=3)
-
-
-    
     # Angle value input boxes
     # adjacent angle value input box
-    self.adjacent_angle_entry = Entry(self.input_value_frame, font=("Arial", "14"), width=12)
-    self.adjacent_angle_entry.grid(row=2, column=4, padx=10, pady=3)
+    self.adjacent_angle_entry = Entry(self.input_value_frame, font=("Arial", "14"), )
+    self.adjacent_angle_entry.grid(row=2, column=1, padx=10, pady=3)
 
     # opposite angle value input box
-    self.opposite_angle_entry = Entry(self.input_value_frame, font=("Arial", "14"), width=12)
-    self.opposite_angle_entry.grid(row=3, column=4, padx=10, pady=3)
-    
-    
+    self.opposite_angle_entry = Entry(self.input_value_frame, font=("Arial", "14"), )
+    self.opposite_angle_entry.grid(row=3, column=1, padx=10, pady=3)
 
 
     self.calculate_button = Button(self.input_value_frame,
@@ -160,29 +122,16 @@ class converter:
                                     fg=button_fg,
                                     font=button_font,
                                     width=20)
-    self.calculate_button.grid(row=4, column=3, columnspan=2 ,pady=3, padx=10)
+    self.calculate_button.grid(row=4, column=1,pady=3, padx=10)
 
 
 
 
 
 def change_mode(value, self):
-  # disable degrees buton if the mode is set to degrees
-  if value == "Degrees":
-    # set radians button to normal
-    self.to_radian_mode.config(state=NORMAL)
-    # set degrees button to disabled
-    self.to_degrees_mode.config(state=DISABLED)
-
-  # disable radians buton if the mode is set to radians
-  if value == "Radians":
-    # set degrees button to normal
-    self.to_degrees_mode.config(state=NORMAL)
-    # set radians button to disabled
-    self.to_radian_mode.config(state=DISABLED)
-  #change the show mode text
-  self.show_mode.config(text="Mode: {}".format(value))
-  print(value) #---------------------------------------------temperary--------------------------
+    mode = value
+    self.show_mode.config(text="Mode: {}".format(value))
+    print(mode)
 # Main Routine
 if __name__ == "__main__": 
   root = Tk()
