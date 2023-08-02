@@ -176,9 +176,8 @@ class converter:
 
     self.error_message = Label(self.misc_labels_help_button,
                                text="{}".format(error),
-                               fg="#9C0000",
-                               width=40,
-                               wraplength=300,
+                               width=20,
+                               wraplength=150,
                                justify="center")
     self.error_message.grid(row=1, column=1)
 
@@ -203,18 +202,6 @@ class converter:
   #fuction to get the values from the input boxes
   def get_values(self):
     # value of the hypotenuse side
-    side_hypotenuse = ""
-    #value for the adjacent side
-    side_adjacent = ""
-    # value for the opposite side
-    side_opposite = ""
-    # value for the adjacent angle
-    angle_adjacent = ""
-    # value for the opposite angle
-    angle_opposite = ""
-
-    
-    # value of the hypotenuse side
     side_hypotenuse = self.hypotenuse_length_entry.get()
     #value for the adjacent side
     side_adjacent = self.adjacent_length_entry.get()
@@ -224,35 +211,8 @@ class converter:
     angle_adjacent = self.adjacent_angle_entry.get()
     # value for the opposite angle
     angle_opposite = self.opposite_angle_entry.get()
-    print("before change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite))
-      # if there wasnt a value entered, set value to 0
-    try:
-      if side_hypotenuse == "":
-        side_hypotenuse = float(0)
-      else:
-        side_hypotenuse = float(side_hypotenuse)
-      if side_adjacent == "":
-        side_adjacent = float(0)
-      else:
-        side_adjacent = float(side_adjacent)
-      if side_opposite == "":
-        side_opposite = float(0)
-      else:
-        side_opposite = float(side_opposite)
-      if angle_adjacent == "":
-        angle_adjacent = float(0)
-      else:
-        angle_adjacent = float(angle_adjacent)
-      if angle_opposite == "":
-        angle_opposite = float(0)
-      else:
-        angle_opposite = float(angle_opposite)
-      print("After change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite))
-      check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite)
-    except ValueError:
-      error_text = "Error: Non-valid value entered, e.g XI, letters, symbols"
-      self.error_message.config(text=error_text)
-    
+    print(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite)
+
 def change_mode(value, self):
   # disable degrees buton if the mode is set to degrees
   if value == "Degrees":
@@ -269,34 +229,7 @@ def change_mode(value, self):
     self.to_radian_mode.config(state=DISABLED)
   #change the show mode text
   self.show_mode.config(text="Mode: {}".format(value))
-  
 
-def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite):
-  error_text = "error test"
-  # testing if all the values have been entered, if yes print error
-  if side_hypotenuse != 0 and side_adjacent != 0 and side_opposite != 0 and angle_adjacent != 0 and angle_opposite != 0:
-    error_text = "Error: All values entered"
-
-  # testing if no values have been entered, if yes print error
-  if side_hypotenuse == 0 and side_adjacent == 0 and side_opposite == 0 and angle_adjacent == 0 and angle_opposite == 0:
-    error_text = "Error: No values entered"
-  
-  # testing to see if a side value is negative, if yes print error message
-  if side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
-    error_text = "Error: Side value cannot be negative"
-  # testing to see if a angle value is negative, if yes print error message
-  if angle_adjacent < 0 or angle_opposite < 0:
-    error_text = "Error: Angle value cannot be negative"
-
-  # testing if the hypotenuse is the longest side, if yes print error message
-  if (side_hypotenuse <= side_adjacent or side_hypotenuse <= side_opposite) and side_hypotenuse > 0 :
-    error_text = "Error: Hypotenuse side must be the longest side"
-  
-  print(error_text)
-  
-  
-  self.error_message.config(text=error_text)
-  
   
 
 
