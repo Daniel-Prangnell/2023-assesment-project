@@ -277,35 +277,35 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
                        angle_adjacent, angle_opposite):
   error_text = ""
   # testing if all the values have been entered, if yes print error
-  if side_hypotenuse != 0 and side_adjacent != 0 and side_opposite != 0 and angle_adjacent != 0 and angle_opposite != 0:
+  if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) > 5:
     error_text = "Error: All values entered"
 
   # testing if no values have been entered, if yes print error
-  if side_hypotenuse == 0 and side_adjacent == 0 and side_opposite == 0 and angle_adjacent == 0 and angle_opposite == 0:
+  elif (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) == 5:  
     error_text = "Error: No values entered"
 
   # testing to see if a side value is negative, if yes print error message
-  if side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
+  elif side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
     error_text = "Error: Side value cannot be negative"
   # testing to see if a angle value is negative, if yes print error message
-  if angle_adjacent < 0 or angle_opposite < 0:
+  elif angle_adjacent < 0 or angle_opposite < 0:
     error_text = "Error: Angle value cannot be negative"
 
   # testing if the hypotenuse is the longest side, if yes print error message
-  if (side_hypotenuse <= side_adjacent
+  elif (side_hypotenuse <= side_adjacent
       or side_hypotenuse <= side_opposite) and side_hypotenuse > 0:
     error_text = "Error: Hypotenuse side must be the longest side"
 
   #testing if the total value of the input angles is equal to 90 degrees or π / 2
-  if (angle_adjacent != 0 and angle_opposite != 0):
+  elif (angle_adjacent != 0 and angle_opposite != 0):
     if (mode == "Degrees" and angle_adjacent + angle_opposite > 90) or (mode == "Radian" and angle_adjacent + angle_opposite > math.pi / 2):
       error_text = "Error: combined value of angles cannot exceed 90 degrees or π / 2"
-  if (angle_adjacent != 0 and angle_opposite != 0):
+  elif (angle_adjacent != 0 and angle_opposite != 0):
     if (mode == "Degrees" and angle_adjacent + angle_opposite < 90) or (mode == "Radians" and angle_adjacent + angle_opposite < math.pi / 2):
       error_text = "Error: combined value of input angles must be equal 90 degrees or π / 2"
 
 
-  if side_hypotenuse == 0 and side_adjacent == 0 and side_opposite == 0:
+  elif (side_hypotenuse, side_adjacent, side_opposite).count(0) == 3:
     error_text = "Error: At least one length value must be entered"
   
   print(error_text)
