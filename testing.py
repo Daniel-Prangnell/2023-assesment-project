@@ -1,5 +1,6 @@
 from tkinter import *
 from functools import partial  # To prevent unwanted windows
+import math
 
 mode = "Degrees"
 area = "uncalculated"
@@ -191,11 +192,6 @@ class converter:
                               command=self.help_menu)
     self.help_button.grid(row=2, column=1, pady=3, padx=10)
 
-
-
-
-
-  
   # Opens Helps menu
   def help_menu(self):
     DisplayHelp(self)
@@ -213,7 +209,6 @@ class converter:
     # value for the opposite angle
     angle_opposite = ""
 
-    
     # value of the hypotenuse side
     side_hypotenuse = self.hypotenuse_length_entry.get()
     #value for the adjacent side
@@ -224,8 +219,10 @@ class converter:
     angle_adjacent = self.adjacent_angle_entry.get()
     # value for the opposite angle
     angle_opposite = self.opposite_angle_entry.get()
-    print("before change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite))
-      # if there wasnt a value entered, set value to 0
+    print("before change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent,
+                                                side_opposite, angle_adjacent,
+                                                angle_opposite))
+    # if there wasnt a value entered, set value to 0
     try:
       if side_hypotenuse == "":
         side_hypotenuse = float(0)
@@ -247,12 +244,17 @@ class converter:
         angle_opposite = float(0)
       else:
         angle_opposite = float(angle_opposite)
-      print("After change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite))
-      check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite)
+      print("After change:{} {} {} {} {}".format(side_hypotenuse,
+                                                 side_adjacent, side_opposite,
+                                                 angle_adjacent,
+                                                 angle_opposite))
+      check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
+                         angle_adjacent, angle_opposite)
     except ValueError:
       error_text = "Error: Non-valid value entered, e.g XI, letters, symbols"
       self.error_message.config(text=error_text)
-    
+
+
 def change_mode(value, self):
   # disable degrees buton if the mode is set to degrees
   if value == "Degrees":
@@ -269,10 +271,11 @@ def change_mode(value, self):
     self.to_radian_mode.config(state=DISABLED)
   #change the show mode text
   self.show_mode.config(text="Mode: {}".format(value))
-  
 
-def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite):
-  error_text = "error test"
+
+def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
+                       angle_adjacent, angle_opposite):
+  error_text = ""
   # testing if all the values have been entered, if yes print error
   if side_hypotenuse != 0 and side_adjacent != 0 and side_opposite != 0 and angle_adjacent != 0 and angle_opposite != 0:
     error_text = "Error: All values entered"
@@ -280,7 +283,7 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angl
   # testing if no values have been entered, if yes print error
   if side_hypotenuse == 0 and side_adjacent == 0 and side_opposite == 0 and angle_adjacent == 0 and angle_opposite == 0:
     error_text = "Error: No values entered"
-  
+
   # testing to see if a side value is negative, if yes print error message
   if side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
     error_text = "Error: Side value cannot be negative"
@@ -289,16 +292,25 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite, angl
     error_text = "Error: Angle value cannot be negative"
 
   # testing if the hypotenuse is the longest side, if yes print error message
-  if (side_hypotenuse <= side_adjacent or side_hypotenuse <= side_opposite) and side_hypotenuse > 0 :
+  if (side_hypotenuse <= side_adjacent
+      or side_hypotenuse <= side_opposite) and side_hypotenuse > 0:
     error_text = "Error: Hypotenuse side must be the longest side"
+
+  #testing if the total value of the input angles is equal to 90 degrees or π / 2
+  if (angle_adjacent != 0 and angle_opposite != 0):
+    if (mode == "Degrees" and angle_adjacent + angle_opposite > 90) or (mode == "Radian" and angle_adjacent + angle_opposite > math.pi / 2):
+      error_text = "Error: combined value of angles cannot exceed 90 degrees or π / 2"
+  if (angle_adjacent != 0 and angle_opposite != 0):
+    if (mode == "Degrees" and angle_adjacent + angle_opposite < 90) or (mode == "Radians" and angle_adjacent + angle_opposite < math.pi / 2):
+      error_text = "Error: combined value of input angles must be equal 90 degrees or π / 2"
+
+
+  if side_hypotenuse == 0 and side_adjacent == 0 and side_opposite == 0:
+    error_text = "Error: At least one length value must be entered"
   
   print(error_text)
-  
-  
-  self.error_message.config(text=error_text)
-  
-  
 
+  self.error_message.config(text=error_text)
 
 
 class DisplayHelp:
@@ -347,7 +359,6 @@ class DisplayHelp:
     self.help_box.destroy()
 
 
-  
 # Main Routine
 if __name__ == "__main__":
   root = Tk()
