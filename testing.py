@@ -276,51 +276,52 @@ def change_mode(value, self):
 def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
                        angle_adjacent, angle_opposite):
   error_text = ""
-  
-
-  # testing to see if a side value is negative, if yes print error message
-  if side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
-    error_text = "Error: Side value cannot be negative"
-  # testing to see if a angle value is negative, if yes print error message
-  if angle_adjacent < 0 or angle_opposite < 0:
-    error_text = "Error: Angle value cannot be negative"
-
-  # testing if the hypotenuse is the longest side, if yes print error message
-  if (side_hypotenuse <= side_adjacent
-      or side_hypotenuse <= side_opposite) and side_hypotenuse > 0:
-    error_text = "Error: Hypotenuse side must be the longest side"
-
-  #testing if the total value of the input angles is equal to 90 degrees or π / 2
-  if (angle_adjacent != 0 and angle_opposite != 0):
-    if (mode == "Degrees" and angle_adjacent + angle_opposite > 90) or (mode == "Radian" and angle_adjacent + angle_opposite > math.pi / 2):
-      error_text = "Error: combined value of angles cannot exceed 90 degrees or π / 2"
-  if (angle_adjacent != 0 and angle_opposite != 0):
-    if (mode == "Degrees" and angle_adjacent + angle_opposite < 90) or (mode == "Radians" and angle_adjacent + angle_opposite < math.pi / 2):
-      error_text = "Error: combined value of input angles must be equal 90 degrees or π / 2"
-
-  # testing if the user has entered at least one length
-  if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 3:
-    error_text = "Error: At least one length value must be entered"
-    
-  # testing to see if the user has entered 2 different values
-  if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) >= 4:
-    error_text = "Error: less than two values input"
-    
-  #testing to see if user has enter more than 2 values
-  if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) <= 2:
-    error_text = "Error: Please enter only 2 values, this is to avoid having miscalculations"
-  
+  has_error  = False
   # testing if all the values have been entered, if yes print error
   if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) == 0:
     error_text = "Error: All values entered"
+    has_error  = True
 
   # testing if no values have been entered, if yes print error
   if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) == 5:  
     error_text = "Error: No values entered"
+    has_error  = True
 
-  
+  # testing if the user has entered at least one length
+  if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 3:
+    error_text = "Error: At least one length value must be entered"
+    has_error  = True
+    
+  # testing to see if the user has entered 2 different values
+  if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) >= 4:
+    error_text = "Error: less than two values input"
+    has_error  = True
+    
+  #testing to see if user has enter more than 2 values
+  if (side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite).count(0) <= 2:
+    error_text = "Error: Please enter only 2 values, this is to avoid having miscalculations"
+    has_error  = True
+    
+  # testing to see if a side value is negative, if yes print error message
+  if side_hypotenuse < 0 or side_adjacent < 0 or side_opposite < 0:
+    error_text = "Error: Side value cannot be negative"
+    has_error  = True
+    
+  # testing to see if a angle value is negative, if yes print error message
+  if angle_adjacent < 0 or angle_opposite < 0:
+    error_text = "Error: Angle value cannot be negative"
+    has_error  = True
+    
+  # testing if the hypotenuse is the longest side, if yes print error message
+  if (side_hypotenuse <= side_adjacent
+      or side_hypotenuse <= side_opposite) and side_hypotenuse > 0:
+    error_text = "Error: Hypotenuse side must be the longest side"
+    has_error  = True
+
   print(error_text)
 
+  if has_error == False:
+    print("go to calculation")
   self.error_message.config(text=error_text)
 
 
