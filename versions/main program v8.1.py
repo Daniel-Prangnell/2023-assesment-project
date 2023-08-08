@@ -219,6 +219,9 @@ class converter:
     angle_adjacent = self.adjacent_angle_entry.get()
     # value for the opposite angle
     angle_opposite = self.opposite_angle_entry.get()
+    print("before change:{} {} {} {} {}".format(side_hypotenuse, side_adjacent,
+                                                side_opposite, angle_adjacent,
+                                                angle_opposite))
     # if there wasnt a value entered, set value to 0
     try:
       if side_hypotenuse == "":
@@ -241,6 +244,10 @@ class converter:
         angle_opposite = float(0)
       else:
         angle_opposite = float(angle_opposite)
+      print("After change:{} {} {} {} {}".format(side_hypotenuse,
+                                                 side_adjacent, side_opposite,
+                                                 angle_adjacent,
+                                                 angle_opposite))
       check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
                          angle_adjacent, angle_opposite)
     except ValueError:
@@ -310,66 +317,13 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
       or side_hypotenuse <= side_opposite) and side_hypotenuse > 0:
     error_text = "Error: Hypotenuse side must be the longest side"
     has_error  = True
-    
-  # testing if the input angle exceeds or is equal to 90 degrees
-  if (angle_adjacent >= 90 or angle_opposite >= 90) and mode == "Degrees":
-    error_text = "Error: angle cannot equal or exceed 90 degrees"
 
-  # testing if the input angle exceeds or is equal
-  if (angle_adjacent >= math.pi / 2 or angle_opposite >= math.pi / 2 ) and mode == "Radians":
-    error_text = "Error: angle cannot equal or exceed π/2 or 1.5707... radians"
-
-  # testing if angle is negative
-  if angle_adjacent < 0  or angle_opposite < 0:
-    error_text = "Error: angle cannot be negative"
-
-  
   print(error_text)
-  self.error_message.config(text=error_text)
+
   if has_error == False:
-    Calculations(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite)
-  
+    print("go to calculation")
+  self.error_message.config(text=error_text)
 
-
-
-def Calculations(self, side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite):
-  print(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite)
-  # if the mode is set to degrees, setting the angle values to radians
-  if mode == "degrees":
-    # making the angle values radians
-    angle_adjacent = math.radians(angle_adjacent) 
-    angle_opposite = math.radians(angle_opposite)
-
-
-  #*********************calculations (sides)*********************
-  while (side_hypotenuse, side_adjacent, side_opposite).count(0) != 0:
-    if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 1: #to see whether there is only one unknown length
-      if side_hypotenuse == 0: #to see if the hypotenuse is the unknown length
-        #A² + B² = C²
-        side_hypotenuse = round(math.sqrt(math.pow(side_adjacent, 2) + math.pow(side_opposite, 2)),2)
-      elif side_adjacent == 0:  #to see if the adjacent is the unknown length
-        #A² = C² - B²
-        side_adjacent = round(math.sqrt(math.pow(side_hypotenuse, 2) - math.pow(side_opposite, 2)), 2)
-      elif side_opposite == 0:  #to see if the opposite is the unknown length
-        #B² = C² - A²
-        side_opposite = round(math.sqrt(math.pow(side_hypotenuse, 2) - math.pow(side_adjacent, 2)), 2)
-      
-    if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 2: #to see whether there is 2 unknown lengths
-      if side_adjacent == 0 and angle_adjacent != 0: #see if the adjacent length is unknown and is the adjacent angle is known
-        if side_hypotenuse != 0: #see if the hypotenuse length is known
-          side_adjacent = round(math.cos(angle_adjacent) * side_hypotenuse, 2) #calculation for adjacent length using adjacent angle and the hypotenuse length
-        if side_opposite != 0: #see if the opposite length is known
-          side_adjacent = round(math.tan(angle_adjacent) * side_opposite, 2) #calculation for adjacent length using adjacent angle and the opposite length
-  
-      elif side_opposite == 0 and angle_opposite != 0: #see if the oppostie length is unknown and is the opposite angle is known
-        if side_hypotenuse != 0: #see if the hypotenuse length is known
-          side_opposite = round(math.sin(angle_opposite) * side_hypotenuse, 2) #calculation for opposite length using adjacent angle and the hypotenuse length
-        if side_adjacent != 0: #see if the adjacent length is known
-          side_opposite = round(math.tan(angle_opposite) * side_adjacent, 2) #calculation for opposite length using adjacent angle and the adjacent length
-
-
-  
-  print((side_hypotenuse, side_adjacent, side_opposite, angle_adjacent, angle_opposite))
 
 class DisplayHelp:
 
