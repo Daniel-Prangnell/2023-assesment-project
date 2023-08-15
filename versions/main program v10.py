@@ -219,9 +219,7 @@ class converter:
     angle_adjacent = self.adjacent_angle_entry.get()
     # value for the opposite angle
     angle_opposite = self.opposite_angle_entry.get()
-    
     # if there wasnt a value entered, set value to 0
-    # Also setting value type to float so that they can be printed
     try:
       if side_hypotenuse == "":
         side_hypotenuse = float(0)
@@ -243,23 +241,20 @@ class converter:
         angle_opposite = float(0)
       else:
         angle_opposite = float(angle_opposite)
-
+      check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
+                         angle_adjacent, angle_opposite)
     except ValueError:
       error_text = "Error: Non-valid value entered, e.g XI, letters, symbols"
       self.error_message.config(text=error_text)
-      
-    check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
-                       angle_adjacent, angle_opposite)
+
 
 def change_mode(value, self):
-  global mode
   # disable degrees buton if the mode is set to degrees
   if value == "Degrees":
     # set radians button to normal
     self.to_radian_mode.config(state=NORMAL)
     # set degrees button to disabled
     self.to_degrees_mode.config(state=DISABLED)
-    mode = "Degrees"
 
   # disable radians buton if the mode is set to radians
   if value == "Radians":
@@ -267,7 +262,6 @@ def change_mode(value, self):
     self.to_degrees_mode.config(state=NORMAL)
     # set radians button to disabled
     self.to_radian_mode.config(state=DISABLED)
-    mode = "Radians"
   #change the show mode text
   self.show_mode.config(text="Mode: {}".format(value))
 
@@ -324,19 +318,17 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
   # testing if the input angle exceeds or is equal to 90 degrees
   if (angle_adjacent >= 90 or angle_opposite >= 90) and mode == "Degrees":
     error_text = "Error: angle cannot equal or exceed 90 degrees"
-    has_error = True
 
   # testing if the input angle exceeds or is equal
   if (angle_adjacent >= math.pi / 2
       or angle_opposite >= math.pi / 2) and mode == "Radians":
     error_text = "Error: angle cannot equal or exceed π/2 or 1.5707... radians"
-    has_error = True
 
   # testing if angle is negative
   if angle_adjacent < 0 or angle_opposite < 0:
     error_text = "Error: angle cannot be negative"
-    has_error = True
 
+  print(error_text)
   self.error_message.config(text=error_text)
   if has_error == False:
     Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
@@ -345,6 +337,8 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
 
 def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
                  angle_adjacent, angle_opposite):
+  print(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent,
+        angle_opposite)
   # if the mode is set to degrees, setting the angle values to radians
   if mode == "Degrees":
     # making the angle values radians
@@ -354,37 +348,32 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
   #*********************calculations (sides)*********************
   # continue looping until all sides are worked out
   while (side_hypotenuse, side_adjacent, side_opposite).count(0) != 0:
-
+    
     # test to see if there is only one unknown side
     if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 1:
-
+      
       # test if the hypotenuse is the unknown side
-      if side_hypotenuse == 0:
-        side_hypotenuse = math.sqrt(
-          math.pow(side_adjacent, 2) +
-          math.pow(side_opposite, 2))  #A² + B² = C²
-
-      # test if the adjacent is the unknown side
-      elif side_adjacent == 0:
-        side_adjacent = math.sqrt(
-          math.pow(side_hypotenuse, 2) -
-          math.pow(side_opposite, 2))  #A² = C² - B²
+      if side_hypotenuse == 0:  
+        side_hypotenuse = math.sqrt(math.pow(side_adjacent, 2) + math.pow(side_opposite, 2)) #A² + B² = C²
+        
+      # test if the adjacent is the unknown side    
+      elif side_adjacent == 0:  
+        side_adjacent = math.sqrt(math.pow(side_hypotenuse, 2) - math.pow(side_opposite, 2)) #A² = C² - B²
 
       # test if the opposite is the unknown sideside
-      elif side_opposite == 0:
-        side_opposite = math.sqrt(
-          math.pow(side_hypotenuse, 2) -
-          math.pow(side_adjacent, 2))  #B² = C² - A²
+      elif side_opposite == 0: 
+        side_opposite = math.sqrt(math.pow(side_hypotenuse, 2) - math.pow(side_adjacent, 2)) #B² = C² - A²
 
+    
     # test whether there is 2 unknown sides
-    if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 2:
-
+    if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 2: 
+      
       # Test if the adjacent side is unknown and the adjacent angle is known
-      if side_adjacent == 0 and angle_adjacent != 0:
+      if side_adjacent == 0 and angle_adjacent != 0:  
         #test if the hypotenuse side is known
-        if side_hypotenuse != 0:
+        if side_hypotenuse != 0:  
           #calculation for adjacent length using adjacent angle and the hypotenuse side
-          side_adjacent = math.cos(angle_adjacent) * side_hypotenuse
+          side_adjacent = math.cos(angle_adjacent) * side_hypotenuse 
 
         #test if the opposite side is known
         elif side_opposite != 0:
@@ -392,83 +381,66 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
           side_adjacent = math.tan(angle_adjacent) * side_opposite
 
       # Test if the oppostie side is unknown and is the opposite angle is known
-      elif side_opposite == 0 and angle_opposite != 0:
+      elif side_opposite == 0 and angle_opposite != 0:  
         if side_hypotenuse != 0:  #see if the hypotenuse side is known
           #calculation for opposite side using adjacent angle and the hypotenuse side
           side_opposite = math.sin(angle_opposite) * side_hypotenuse
 
         # Test if the adjacent side is known
-        elif side_adjacent != 0:
+        elif side_adjacent != 0:  
           #calculation for opposite side using adjacent angle and the adjacent side
-          side_opposite = math.tan(angle_opposite) * side_adjacent
-    print("test")
-
-
-#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+          side_opposite = math.tan(angle_opposite) * side_adjacent 
 
   
+
   #*********************Calculations (angles)*********************
   # Continue looping until both angles are known
   while (angle_adjacent, angle_opposite).count(0) != 0:
 
     # Testing if one angle is known
     if (angle_adjacent, angle_opposite).count(0) == 1:
-      # Test if the adjacent angle is unknown and opposite angle is known
-      if angle_adjacent == 0:
-        angle_adjacent = (
-          math.pi / 2) - angle_opposite  #calculation: Angle 1 = 90 - angle 2
 
-      # Test if the oppostie angle is unknown and adjacent angle is known
-      if angle_opposite == 0:
-        angle_opposite = (
-          math.pi / 2) - angle_adjacent  #calculation: Angle 2 = 90 - angle 1
+      # Test if the adjacent angle is unknown and opposite angle is known, and the mode is on degrees
+      if angle_adjacent == 0 and mode == "Degrees":  
+        angle_adjacent = 90 - angle_opposite #calculation: Angle 1 = 90 - angle 2
+      # Test if the oppostie angle is unknown and adjacent angle is known, and the mode is on degrees
+      elif angle_opposite == 0 and mode == "Degrees":  
+        angle_opposite = 90 - angle_adjacent #calculation: Angle 1 = 90 - angle 2
+      # Test if the adjacent angle is unknown and opposite angle is known, and the mode is on radians
+      elif angle_adjacent == 0 and mode == "Radians":  
+        angle_adjacent = (math.pi / 2) - angle_opposite #calculation: Angle 1 = 90 - angle 2
+      # Test if the oppostie angle is unknown and adjacent angle is known, and the mode is on radians
+      elif angle_opposite == 0 and mode == "Radians":  
+        angle_opposite = (math.pi / 2) - angle_adjacent #calculation: Angle 1 = 90 - angle 2
 
     # Testing if both angles are unknown
     if angle_adjacent == 0 and angle_opposite == 0:
-
+      
       # if the opposite side and hypontenuse are known, use them to work out the angles
       if side_opposite != 0 and side_hypotenuse != 0:
-        angle_adjacent = math.asin(side_opposite /
-                                   side_hypotenuse)  #calculation: Soh Cah Toa
-        angle_opposite = math.acos(side_opposite /
-                                   side_hypotenuse)  #calculation: Soh Cah Toa
-
+        angle_adjacent = math.asin(side_opposite / side_hypotenuse)  #calculation: Soh Cah Toa
+        angle_opposite = math.acos(side_opposite / side_hypotenuse)  #calculation: Soh Cah Toa
+        
       # if the adjacent side and hypontenuse are known, use them to work out the angles
       elif side_adjacent != 0 and side_hypotenuse != 0:
-        angle_adjacent = math.asin(side_adjacent /
-                                   side_hypotenuse)  #calculation: Soh Cah Toa
-        angle_opposite = math.acos(side_adjacent /
-                                   side_hypotenuse)  #calculation: Soh Cah Toa
-
+        angle_adjacent = math.asin(side_adjacent / side_hypotenuse)  #calculation: Soh Cah Toa
+        angle_opposite = math.acos(side_adjacent / side_hypotenuse)  #calculation: Soh Cah Toa
+        
       # if the opposite and adjacent sides are known, use them to work out the angles
       elif side_adjacent != 0 and side_opposite != 0:
-        angle_adjacent = math.asin(side_opposite /
-                                   side_adjacent)  #calculation: Soh Cah Toa
-        angle_opposite = math.acos(side_opposite /
-                                   side_adjacent)  #calculation: Soh Cah Toa
-
+        angle_adjacent = math.asin(side_opposite / side_adjacent)  #calculation: Soh Cah Toa
+        angle_opposite = math.acos(side_opposite / side_adjacent)  #calculation: Soh Cah Toa
+        
   # if the mode is on degrees transform angles into degrees,
   # because to work out the values they need to be transfomered in radians
   if mode == "Degrees":
-    angle_adjacent = angle_adjacent * (180 / math.pi)
-    angle_opposite = angle_opposite * (180 / math.pi)
+    angle_adjacent = angle_adjacent * (180/math.pi)
+    angle_opposite = angle_opposite * (180/math.pi)
+    print(mode)
+  
+  print("Hypotenuse: {} \nAdjacent side: {} \nOpposite side: {} \nangle_adjacent: {} \nangle_opposite: {} \n ".format(side_hypotenuse, side_adjacent, side_opposite, angle_adjacent,
+         angle_opposite))
 
-  # This area is used to put the values into the text boxes
-  self.hypotenuse_length_entry.delete(0,END)
-  self.hypotenuse_length_entry.insert(0,round(side_hypotenuse,2))
-  
-  self.adjacent_length_entry.delete(0,END)
-  self.adjacent_length_entry.insert(0,round(side_adjacent,2))
-  
-  self.opposite_length_entry.delete(0,END)
-  self.opposite_length_entry.insert(0,round(side_opposite,2))
-  
-  self.adjacent_angle_entry.delete(0,END)
-  self.adjacent_angle_entry.insert(0,round(angle_adjacent,2))
-  
-  self.opposite_angle_entry.delete(0,END)
-  self.opposite_angle_entry.insert(0,round(angle_opposite,2))
-  
 
 class DisplayHelp:
 
