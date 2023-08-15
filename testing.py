@@ -380,27 +380,57 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
     if (side_hypotenuse, side_adjacent, side_opposite).count(0) == 2:
 
       # Test if the adjacent side is unknown and the adjacent angle is known
-      if side_adjacent == 0 and angle_adjacent != 0:
-        #test if the hypotenuse side is known
-        if side_hypotenuse != 0:
-          #calculation for adjacent length using adjacent angle and the hypotenuse side
-          side_adjacent = math.cos(angle_adjacent) * side_hypotenuse
+      if side_adjacent == 0:
+        if angle_adjacent != 0:
+          #test if the hypotenuse side is known
+          if side_hypotenuse != 0:
+            #calculation for adjacent length using adjacent angle and the hypotenuse side
+            side_adjacent = math.cos(angle_adjacent) * side_hypotenuse
+  
+          #test if the opposite side is known
+          elif side_opposite != 0:
+            #calculation for adjacent side using adjacent angle and the opposite side
+            side_adjacent = math.tan(angle_adjacent) * side_opposite
 
-        #test if the opposite side is known
-        elif side_opposite != 0:
-          #calculation for adjacent side using adjacent angle and the opposite side
-          side_adjacent = math.tan(angle_adjacent) * side_opposite
+        if angle_opposite != 0:
+          #test if the hypotenuse side is known
+          if side_hypotenuse != 0:
+            #calculation for adjacent length using adjacent angle and the hypotenuse side
+            side_adjacent = math.cos(angle_opposite) * side_hypotenuse
+  
+          #test if the opposite side is known
+          elif side_opposite != 0:
+            #calculation for adjacent side using adjacent angle and the opposite side
+            side_adjacent = math.tan(angle_opposite) * side_opposite
 
+
+
+
+      
       # Test if the oppostie side is unknown and is the opposite angle is known
-      elif side_opposite == 0 and angle_opposite != 0:
-        if side_hypotenuse != 0:  #see if the hypotenuse side is known
-          #calculation for opposite side using adjacent angle and the hypotenuse side
-          side_opposite = math.sin(angle_opposite) * side_hypotenuse
+      elif side_opposite == 0:
+        # test if the opposite angle is known
+        if angle_opposite != 0:
+          #see if the hypotenuse side is known
+          if side_hypotenuse != 0:  
+            #calculation for opposite side using adjacent angle and the hypotenuse side
+            side_opposite = math.sin(angle_opposite) * side_hypotenuse
+  
+          # Test if the adjacent side is known
+          elif side_adjacent != 0:
+            #calculation for opposite side using adjacent angle and the adjacent side
+            side_opposite = math.tan(angle_opposite) * side_adjacent
 
-        # Test if the adjacent side is known
-        elif side_adjacent != 0:
-          #calculation for opposite side using adjacent angle and the adjacent side
-          side_opposite = math.tan(angle_opposite) * side_adjacent
+        # test if the adjacent angle is known
+        elif angle_adjacent != 0:
+          #see if the hypotenuse side is known
+          if side_hypotenuse != 0:  #see if the hypotenuse side is known
+            side_opposite = math.sin(angle_adjacent) * side_hypotenuse
+
+          # Test if the adjacent side is known
+          elif side_adjacent != 0:
+            #calculation for opposite side using adjacent angle and the adjacent side
+            side_opposite = math.tan(angle_adjacent) * side_adjacent
     print("test")
 
 
