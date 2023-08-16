@@ -5,8 +5,7 @@ import math
 mode = "Degrees"
 area = "uncalculated"
 error = ""
-number_saved_triangles = 0
-save_file = open("history.txt", "w").close()
+
 
 class converter:
 
@@ -199,15 +198,12 @@ class converter:
                               fg=button_fg,
                               font=button_font,
                               width=20,
-                              command=self.history_menu)
+                              command=self.help_menu)
     self.history_button.grid(row=2, column=1, pady=3, padx=10)
 
   # Opens Helps menu
   def help_menu(self):
     DisplayHelp(self)
-
-  def history_menu(self):
-    DisplayHistory(self)
 
   #fuction to get the values from the input boxes
   def get_values(self):
@@ -445,6 +441,8 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
             side_opposite = math.tan(angle_adjacent) * side_adjacent
 
 
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   
   #*********************Calculations (angles)*********************
   # Continue looping until both angles are known
@@ -507,28 +505,7 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
   
   self.opposite_angle_entry.delete(0,END)
   self.opposite_angle_entry.insert(0,round(angle_opposite,2))
-
-  #----------------------------------------AREA---------------------------------------
-  global area
-  area = round((side_adjacent * side_opposite) / 2, 2)
-  self.display_area.config(text="Area: {}".format(area))
-
-  #---------------------------------------- Saving Values --------------------------------------------
   
-#store values in external txt file. already formated
-  global number_saved_triangles
-  number_saved_triangles += 1
-
-
-  save_file = open("history.txt", "a")
-  save_file.write("Calculation {} triangle sizes: \n".format(str(number_saved_triangles)))
-  save_file.write("Hypotenuse length: {} \n".format(str(round(side_hypotenuse,2))))
-  save_file.write("Adjacent length: {} \n".format(str(round(side_adjacent,2))))
-  save_file.write("Opposite length: {} \n".format(str(round(side_opposite,2))))
-  save_file.write("Adjacent angle: {}° \n".format(str(round(angle_adjacent,2))))
-  save_file.write("Opposite angle: {}° \n\n\n".format(str(round(angle_opposite,2))))
-  save_file.close()
-
 
 class DisplayHelp:
 
@@ -574,58 +551,6 @@ class DisplayHelp:
   def close_help(self, partner):
     partner.help_button.config(state=NORMAL)
     self.help_box.destroy()
-
-
-
-class DisplayHistory:
-
-  def __init__(self, partner):
-    background = "#ffe6cc"
-    self.history_box = Toplevel()
-
-    partner.history_button.config(state=DISABLED)
-
-    self.history_box.protocol('WM_DELETE_WINDOW', partial(self.close_history,
-                                                       partner))
-
-    self.history_frame = Frame(self.history_box,
-                            width=300,
-                            height=200,
-                            bg=background)
-
-    self.history_frame.grid()
-
-    self.history_heading_label = Label(self.history_frame,
-                                    bg=background,
-                                    text="History",
-                                    font=("Arial", "14", "bold"))
-    self.history_heading_label.grid(row=0)
-
-     
-    save_file = open("history.txt", "r")
-    history_text = save_file.read()
-    save_file.close()
-    
-    self.history_text_label = Label(self.history_frame,
-                                 bg=background,
-                                 text=history_text,
-                                 wrap=350,
-                                 justify="left")
-    self.history_text_label.grid(row=1, padx=10)
-
-    self.dismiss_button = Button(self.history_frame,
-                                 font=("Arial", "12", "bold"),
-                                 text="Dismiss",
-                                 bg="#CC6600",
-                                 fg="#FFFFFF",
-                                 command=partial(self.close_history, partner))
-    self.dismiss_button.grid(row="2")
-
-  def close_history(self, partner):
-    partner.history_button.config(state=NORMAL)
-    self.history_box.destroy()
-
-
 
 
 # Main Routine
