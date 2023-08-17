@@ -526,7 +526,8 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
   save_file.write("Adjacent length: {} \n".format(str(round(side_adjacent,2))))
   save_file.write("Opposite length: {} \n".format(str(round(side_opposite,2))))
   save_file.write("Adjacent angle: {}° \n".format(str(round(angle_adjacent,2))))
-  save_file.write("Opposite angle: {}° \n\n\n".format(str(round(angle_opposite,2))))
+  save_file.write("Opposite angle: {}° \n".format(str(round(angle_opposite,2))))
+  save_file.write("Area: {} \n \n \n".format(str(round(area,2))))
   save_file.close()
 
 
@@ -589,7 +590,7 @@ class DisplayHistory:
                                                        partner))
 
     self.history_frame = Frame(self.history_box,
-                            width=300,
+                            width=360,
                             height=200,
                             bg=background)
 
@@ -598,8 +599,10 @@ class DisplayHistory:
     self.history_heading_label = Label(self.history_frame,
                                     bg=background,
                                     text="History",
+                                    justify="center",
+                                    width= 15,
                                     font=("Arial", "14", "bold"))
-    self.history_heading_label.grid(row=0)
+    self.history_heading_label.grid(row=0, columnspan=2)
 
      
     save_file = open("history.txt", "r")
@@ -611,22 +614,37 @@ class DisplayHistory:
                                  text=history_text,
                                  wrap=350,
                                  justify="left")
-    self.history_text_label.grid(row=1, padx=10)
+    self.history_text_label.grid(row=1, padx=10, columnspan=2)
 
     self.dismiss_button = Button(self.history_frame,
                                  font=("Arial", "12", "bold"),
                                  text="Dismiss",
                                  bg="#CC6600",
                                  fg="#FFFFFF",
+                                 width=7,
                                  command=partial(self.close_history, partner))
-    self.dismiss_button.grid(row="2")
+    self.dismiss_button.grid(row=2, column = 0, padx=5, pady=10)
 
+    self.refresh_button = Button(self.history_frame,
+                                 font=("Arial", "12", "bold"),
+                                 text="Refresh",
+                                 bg="#b80287",
+                                 fg="#FFFFFF",
+                                 width=7,
+                                 command=partial(self.refresh, partner))
+    self.refresh_button.grid(row=2, column=1, padx=5, pady=10)
+
+  def refresh(self, partner):
+    save_file = open("history.txt", "r")
+    history_text = save_file.read()
+    save_file.close()
+    self.history_text_label.config(text=history_text)
+    
   def close_history(self, partner):
     partner.history_button.config(state=NORMAL)
     self.history_box.destroy()
 
-
-
+  
 
 # Main Routine
 if __name__ == "__main__":

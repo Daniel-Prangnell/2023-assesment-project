@@ -1,16 +1,9 @@
 Calculation 1 triangle sizes: 
-Hypotenuse length: 5.0 
-Adjacent length: 4.0 
-Opposite length: 3.0 
-Adjacent angle: 36.87° 
-Opposite angle: 53.13° 
-
-
-Calculation 2 triangle sizes: 
-Hypotenuse length: 5.0 
-Adjacent length: 3.54 
-Opposite length: 3.54 
-Adjacent angle: 45.0° 
-Opposite angle: 45.0° 
-
-
+Hypotenuse length: 46.0 
+Adjacent length: 45.61 
+Opposite length: 6.0 
+Adjacent angle: 7.49° 
+Opposite angle: 82.51° 
+Area: 136.82 
+ 
+ 
