@@ -2,11 +2,13 @@ from tkinter import *
 from functools import partial  # To prevent unwanted windows
 import math
 
+#global veriables
 mode = "Degrees"
 area = "uncalculated"
 error = ""
 number_saved_triangles = 0
 save_file = open("history.txt", "w").close()
+
 
 class converter:
 
@@ -28,7 +30,7 @@ class converter:
     self.heading.grid(row=0)
 
     # Simple intructions text
-    instuctions = "Please select a mode, then input each of the values into the respective input square."
+    instuctions = "Please select a mode, then input each of the values into the respective input box."
     # Display the simple instructions
     self.basic_instructions = Label(self.heading_instruction_frame,
                                     text=instuctions,
@@ -72,6 +74,7 @@ class converter:
     self.input_value_frame = Frame(self.heading_instruction_frame)
     self.input_value_frame.grid(row=3)
 
+    #text above the length input boxes
     self.side_length_text = Label(
       self.input_value_frame,
       text="Input the values for the side lengths in the boxes below",
@@ -80,6 +83,7 @@ class converter:
       justify="center")
     self.side_length_text.grid(row=1, column=0, columnspan=2, pady=5, padx=5)
 
+    #text above angle input boxes
     self.angle_size_text = Label(
       self.input_value_frame,
       text="Input the values for the angle sizes in the boxes below",
@@ -157,6 +161,7 @@ class converter:
                                       width=12)
     self.opposite_angle_entry.grid(row=3, column=4, padx=10, pady=3)
 
+    #calculate button
     self.calculate_button = Button(self.input_value_frame,
                                    text="Calculate",
                                    bg="#009900",
@@ -166,16 +171,19 @@ class converter:
                                    command=lambda: self.get_values())
     self.calculate_button.grid(row=4, column=3, columnspan=2, pady=3, padx=10)
 
+    # the frame for the other text / buttons (Area display, error message, help/info, and history)
     self.misc_labels_help_button = Frame(self.heading_instruction_frame)
     self.misc_labels_help_button.grid(row=4)
 
+    # Display area text display
     self.display_area = Label(self.misc_labels_help_button,
                               text="Area: {}".format(area),
                               width=20,
                               wraplength=150,
                               justify="center")
-    self.display_area.grid(row=0, column=0,columnspan=2)
+    self.display_area.grid(row=0, column=0, columnspan=2)
 
+    # Error text display
     self.error_message = Label(self.misc_labels_help_button,
                                text="{}".format(error),
                                fg="#9C0000",
@@ -184,6 +192,7 @@ class converter:
                                justify="center")
     self.error_message.grid(row=1, column=0, columnspan=2)
 
+    # Help button
     self.help_button = Button(self.misc_labels_help_button,
                               text="Help / Info",
                               bg="#CC6600",
@@ -193,19 +202,21 @@ class converter:
                               command=self.help_menu)
     self.help_button.grid(row=2, column=0, pady=3, padx=10)
 
+    # History button
     self.history_button = Button(self.misc_labels_help_button,
-                              text="History",
-                              bg="#b80287",
-                              fg=button_fg,
-                              font=button_font,
-                              width=20,
-                              command=self.history_menu)
+                                 text="History",
+                                 bg="#b80287",
+                                 fg=button_fg,
+                                 font=button_font,
+                                 width=20,
+                                 command=self.history_menu)
     self.history_button.grid(row=2, column=1, pady=3, padx=10)
 
   # Opens Helps menu
   def help_menu(self):
     DisplayHelp(self)
 
+  # Opens History menu
   def history_menu(self):
     DisplayHistory(self)
 
@@ -232,7 +243,7 @@ class converter:
     angle_adjacent = self.adjacent_angle_entry.get()
     # value for the opposite angle
     angle_opposite = self.opposite_angle_entry.get()
-    
+
     # if there wasnt a value entered, set value to 0
     # Also setting value type to float so that they can be printed
     try:
@@ -258,12 +269,16 @@ class converter:
         angle_opposite = float(angle_opposite)
 
     except ValueError:
+      #if an entered value is invalid, such as letters symbols, and roman numerals
       error_text = "Error: Non-valid value entered, e.g XI, letters, symbols"
       self.error_message.config(text=error_text)
-      
+
+    # Go to function to check if the entered vfalues are good
     check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
                        angle_adjacent, angle_opposite)
 
+
+#function to change the mode
 def change_mode(value, self):
   global mode
   # disable degrees buton if the mode is set to degrees
@@ -285,6 +300,7 @@ def change_mode(value, self):
   self.show_mode.config(text="Mode: {}".format(value))
 
 
+#checking the values function
 def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
                        angle_adjacent, angle_opposite):
   error_text = ""
@@ -350,12 +366,15 @@ def check_input_values(self, side_hypotenuse, side_adjacent, side_opposite,
     error_text = "Error: angle cannot be negative"
     has_error = True
 
+  # show error message
   self.error_message.config(text=error_text)
+  # if there wasnt an error, begin calculations
   if has_error == False:
     Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
                  angle_adjacent, angle_opposite)
 
 
+# function for the calculations
 def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
                  angle_adjacent, angle_opposite):
   # if the mode is set to degrees, setting the angle values to radians
@@ -400,7 +419,7 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
           if side_hypotenuse != 0:
             #calculation for adjacent length using adjacent angle and the hypotenuse side
             side_adjacent = math.cos(angle_adjacent) * side_hypotenuse
-  
+
           #test if the opposite side is known
           elif side_opposite != 0:
             #calculation for adjacent side using adjacent angle and the opposite side
@@ -412,22 +431,21 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
           if side_hypotenuse != 0:
             #calculation for adjacent length using adjacent angle and the hypotenuse side
             side_adjacent = math.cos(angle_opposite) * side_hypotenuse
-  
+
           #test if the opposite side is known
           elif side_opposite != 0:
             #calculation for adjacent side using adjacent angle and the opposite side
             side_adjacent = math.tan(angle_opposite) * side_opposite
-
 
       # Test if the oppostie side is unknown and is the opposite angle is known
       elif side_opposite == 0:
         # test if the opposite angle is known
         if angle_opposite != 0:
           #see if the hypotenuse side is known
-          if side_hypotenuse != 0:  
+          if side_hypotenuse != 0:
             #calculation for opposite side using adjacent angle and the hypotenuse side
             side_opposite = math.sin(angle_opposite) * side_hypotenuse
-  
+
           # Test if the adjacent side is known
           elif side_adjacent != 0:
             #calculation for opposite side using adjacent angle and the adjacent side
@@ -444,8 +462,6 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
             #calculation for opposite side using adjacent angle and the adjacent side
             side_opposite = math.tan(angle_adjacent) * side_adjacent
 
-
-  
   #*********************Calculations (angles)*********************
   # Continue looping until both angles are known
   while (angle_adjacent, angle_opposite).count(0) != 0:
@@ -492,71 +508,81 @@ def Calculations(self, side_hypotenuse, side_adjacent, side_opposite,
     angle_adjacent = angle_adjacent * (180 / math.pi)
     angle_opposite = angle_opposite * (180 / math.pi)
 
-  # This area is used to put the values into the text boxes
-  self.hypotenuse_length_entry.delete(0,END)
-  self.hypotenuse_length_entry.insert(0,round(side_hypotenuse,2))
-  
-  self.adjacent_length_entry.delete(0,END)
-  self.adjacent_length_entry.insert(0,round(side_adjacent,2))
-  
-  self.opposite_length_entry.delete(0,END)
-  self.opposite_length_entry.insert(0,round(side_opposite,2))
-  
-  self.adjacent_angle_entry.delete(0,END)
-  self.adjacent_angle_entry.insert(0,round(angle_adjacent,2))
-  
-  self.opposite_angle_entry.delete(0,END)
-  self.opposite_angle_entry.insert(0,round(angle_opposite,2))
+  # This area is used to put the values into the text boxes and round the values to 2 dp
+  self.hypotenuse_length_entry.delete(0, END)
+  self.hypotenuse_length_entry.insert(0, round(side_hypotenuse, 2))
+
+  self.adjacent_length_entry.delete(0, END)
+  self.adjacent_length_entry.insert(0, round(side_adjacent, 2))
+
+  self.opposite_length_entry.delete(0, END)
+  self.opposite_length_entry.insert(0, round(side_opposite, 2))
+
+  self.adjacent_angle_entry.delete(0, END)
+  self.adjacent_angle_entry.insert(0, round(angle_adjacent, 2))
+
+  self.opposite_angle_entry.delete(0, END)
+  self.opposite_angle_entry.insert(0, round(angle_opposite, 2))
 
   #----------------------------------------AREA---------------------------------------
   global area
+  # Equation to work out the area of the triangle
   area = round((side_adjacent * side_opposite) / 2, 2)
   self.display_area.config(text="Area: {}".format(area))
 
   #---------------------------------------- Saving Values --------------------------------------------
-  
-#store values in external txt file. already formated
+
+  #store values in external txt file. already formated
   global number_saved_triangles
   number_saved_triangles += 1
 
-
   save_file = open("history.txt", "a")
-  save_file.write("Calculation {} triangle sizes: \n".format(str(number_saved_triangles)))
-  save_file.write("Hypotenuse length: {} \n".format(str(round(side_hypotenuse,2))))
-  save_file.write("Adjacent length: {} \n".format(str(round(side_adjacent,2))))
-  save_file.write("Opposite length: {} \n".format(str(round(side_opposite,2))))
-  save_file.write("Adjacent angle: {}° \n".format(str(round(angle_adjacent,2))))
-  save_file.write("Opposite angle: {}° \n".format(str(round(angle_opposite,2))))
-  save_file.write("Area: {} \n \n".format(str(round(area,2))))
+  save_file.write("Calculation {} triangle sizes: \n".format(
+    str(number_saved_triangles)))
+  save_file.write("Hypotenuse length: {} \n".format(
+    str(round(side_hypotenuse, 2))))
+  save_file.write("Adjacent length: {} \n".format(str(round(side_adjacent,
+                                                            2))))
+  save_file.write("Opposite length: {} \n".format(str(round(side_opposite,
+                                                            2))))
+  save_file.write("Adjacent angle: {}° \n".format(str(round(angle_adjacent,
+                                                            2))))
+  save_file.write("Opposite angle: {}° \n".format(str(round(angle_opposite,
+                                                            2))))
+  save_file.write("Area: {} \n \n".format(str(round(area, 2))))
   save_file.close()
 
 
+# Help menu
 class DisplayHelp:
-
+  
   def __init__(self, partner):
     background = "#ffe6cc"
     self.help_box = Toplevel()
-
+    
     partner.help_button.config(state=DISABLED)
 
+    # set up so the menu can be closed
     self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help,
                                                        partner))
-
+    
     self.help_frame = Frame(self.help_box,
                             width=300,
                             height=200,
                             bg=background)
-
     self.help_frame.grid()
-
+    
+    # Heading
     self.help_heading_label = Label(self.help_frame,
                                     bg=background,
                                     text="Help / Info",
                                     font=("Arial", "14", "bold"))
     self.help_heading_label.grid(row=0)
 
-    help_text = "insert help info here"
-
+    help_text = (
+      "This program is a right angle triangle solver. \n\nFor this program you will only be able to enter 2 values. One of these values have to be a length. You will enter the values into their respective boxes, on the left you will enter the side length values, and on the right you will enter the angle values.\n\nAfter after you have entered the 2 values you can press the calculate button to have the program work out the remaining values and the area.\n\nTo select the angle type, degrees or radians, you will select the respective modes button. \n\nPlease note that you are unable to enter variables (e.g. X,Y,Z), negative numbers, roman numerals. You also will need to make sure that any entered angle is not larger or equal to 90° or π/2, the hypotenuse will need to be the largest side."
+    )
+    # show the help infomation
     self.help_text_label = Label(self.help_frame,
                                  bg=background,
                                  text=help_text,
@@ -572,12 +598,12 @@ class DisplayHelp:
                                  command=partial(self.close_help, partner))
     self.dismiss_button.grid(row="2")
 
+  # Closes the help menu
   def close_help(self, partner):
     partner.help_button.config(state=NORMAL)
     self.help_box.destroy()
 
-
-
+# show history menu
 class DisplayHistory:
 
   def __init__(self, partner):
@@ -585,37 +611,40 @@ class DisplayHistory:
     self.history_box = Toplevel()
 
     partner.history_button.config(state=DISABLED)
-
-    self.history_box.protocol('WM_DELETE_WINDOW', partial(self.close_history,
-                                                       partner))
+    
+    # set up so the menu can be closed
+    self.history_box.protocol('WM_DELETE_WINDOW',
+                              partial(self.close_history, partner))
 
     self.history_frame = Frame(self.history_box,
-                            width=360,
-                            height=200,
-                            bg=background)
+                               width=360,
+                               height=200,
+                               bg=background)
 
     self.history_frame.grid()
 
     self.history_heading_label = Label(self.history_frame,
-                                    bg=background,
-                                    text="History",
-                                    justify="center",
-                                    width= 15,
-                                    font=("Arial", "14", "bold"))
+                                       bg=background,
+                                       text="History",
+                                       justify="center",
+                                       width=15,
+                                       font=("Arial", "14", "bold"))
     self.history_heading_label.grid(row=0, columnspan=2)
 
-     
+    # Saving the things in the text file to a varable so it can be shown
     save_file = open("history.txt", "r")
     history_text = save_file.read()
     save_file.close()
-    
+
+    # shows the history
     self.history_text_label = Label(self.history_frame,
-                                 bg=background,
-                                 text=history_text,
-                                 wrap=350,
-                                 justify="left")
+                                    bg=background,
+                                    text=history_text,
+                                    wrap=350,
+                                    justify="left")
     self.history_text_label.grid(row=1, padx=10, columnspan=2)
 
+    #Dismiss Button
     self.dismiss_button = Button(self.history_frame,
                                  font=("Arial", "12", "bold"),
                                  text="Dismiss",
@@ -623,8 +652,9 @@ class DisplayHistory:
                                  fg="#FFFFFF",
                                  width=7,
                                  command=partial(self.close_history, partner))
-    self.dismiss_button.grid(row=2, column = 0, padx=5, pady=10)
+    self.dismiss_button.grid(row=2, column=0, padx=5, pady=10)
 
+    # Refresh button
     self.refresh_button = Button(self.history_frame,
                                  font=("Arial", "12", "bold"),
                                  text="Refresh",
@@ -634,17 +664,18 @@ class DisplayHistory:
                                  command=partial(self.refresh, partner))
     self.refresh_button.grid(row=2, column=1, padx=5, pady=10)
 
+  # Updates the history shown in the menu
   def refresh(self, partner):
     save_file = open("history.txt", "r")
     history_text = save_file.read()
     save_file.close()
     self.history_text_label.config(text=history_text)
-    
+  
+  # Closes the menu
   def close_history(self, partner):
     partner.history_button.config(state=NORMAL)
     self.history_box.destroy()
 
-  
 
 # Main Routine
 if __name__ == "__main__":
